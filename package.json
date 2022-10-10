@@ -1,0 +1,59 @@
+{
+  "name": "brevy-cli",
+  "version": "0.0.1",
+  "description": "A Cli program with brevy project utilities for project scaffolding and more!",
+  "repository": "https://github.com/BrevyHQ/brevy-cli",
+  "author": "Brevy, Kamil Solecki",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "./lib/main.js",
+  "bin": {
+    "brevy": "./lib/main.js"
+  },
+  "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node-esm' src/main.ts",
+    "debug": "nodemon --exec \"node --inspect-brk=0.0.0.0:9229 --require ts-node-esm/register src/main.ts\"",
+    "start:windows": "nodemon --watch 'src/**/*.ts' --exec \"npx ts-node-esm\" src/main.ts",
+    "create": "npm run build && npm run test",
+    "build": "tsc -p .",
+    "local": "sudo npm i -g && brevy",
+    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "clear": "^0.1.0",
+    "commander": "^9.4.1",
+    "env-paths": "^3.0.0",
+    "figlet": "^1.5.2",
+    "hygen": "^6.2.11",
+    "inquirer": "^8.0.0",
+    "reflect-metadata": "^0.1.13",
+    "tree-model": "^1.0.7",
+    "yargs": "^17.6.0"
+  },
+  "devDependencies": {
+    "@types/clear": "^0.1.2",
+    "@types/figlet": "^1.5.5",
+    "@types/inquirer": "^9.0.2",
+    "@types/node": "^18.8.1",
+    "@types/yargs": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "eslint": "8.22.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-formatter-pretty": "^4.1.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.1.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-unicorn": "^44.0.0",
+    "nodemon": "^2.0.20",
+    "prettier": "^2.7.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  }
+}

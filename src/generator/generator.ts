@@ -1,26 +1,32 @@
 import { runner, Logger } from 'hygen';
 import execa from 'execa';
 import enquirer from 'enquirer';
-import { GeneratorPlugin } from './plugins/plugin.js';
 import { AnyObject } from '../utility/types.js';
 
-class CodeGenerator {
-  private plugins: Array<GeneratorPlugin> = [];
+interface GeneratorData extends AnyObject {
+  modules: Array<string>;
+}
 
-  public async run(cwd: string, module: string, data: AnyObject) {
+class CodeGenerator {
+  public async run(cwd: string, data: GeneratorData) {
+    const { modules } = data;
+    const promises = modules.map((module) => CodeGenerator.executeRunner(cwd, module, data));
+    await Promise.all(promises);
+  }
+
+  private static executeRunner(cwd: string, module: string, data: AnyObject) {
     const runnerArgs = ['module', module, ...CodeGenerator.getGeneratorArguments(data)];
-    const result = await runner(runnerArgs, {
+    return runner(runnerArgs, {
       cwd,
       templates: '',
       createPrompter: () => enquirer as any,
+      // eslint-disable-next-line
       logger: new Logger(console.log.bind(console)),
       exec: (action, body) => {
         const options = body && body.length > 0 ? { input: body } : {};
         return execa.command(action, { ...options, shell: true });
       },
     });
-
-    console.log(result.actions);
   }
 
   private static getGeneratorArguments(data: Record<string, string>) {

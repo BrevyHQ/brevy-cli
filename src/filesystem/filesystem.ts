@@ -6,6 +6,11 @@ import { exists, mustExist } from '../utility/exists.js';
 import { TreeNode } from '../tree/treeNode.js';
 import { Tree } from '../tree/tree.js';
 
+export enum ProjectRoot {
+  Server = 'server',
+  Client = 'client',
+}
+
 class ApplicationFilesystem {
   private _filesystemRoot: TreeNode<FilesystemEntry> | undefined;
 
@@ -20,16 +25,21 @@ class ApplicationFilesystem {
     return mustExist(this._filesystemRoot);
   }
 
-  public get serverProjectNames() {
-    const projects = this.serverRoot?.children;
+  public getProjectNames(root: ProjectRoot) {
+    const projectRoot = root === ProjectRoot.Server ? this.serverRoot : this.clientRoot;
+    const projects = projectRoot?.children;
     const mapProject = (project: TreeNode<FilesystemEntry>) => project.model.id.split('/').pop();
     return projects?.map(mapProject).filter((project) => project !== '_templates') || [];
   }
 
-  public get clientProjectNames() {
-    const projects = this.clientRoot?.children;
+  public getTemplateNames(root: ProjectRoot) {
+    const projectRoot = root === ProjectRoot.Server ? this.serverRoot : this.clientRoot;
+    const templates = projectRoot?.children.find((node) =>
+      node.model.id.endsWith('_templates'),
+    )?.children;
+
     const mapProject = (project: TreeNode<FilesystemEntry>) => project.model.id.split('/').pop();
-    return projects?.map(mapProject).filter((project) => project !== '_templates') || [];
+    return templates?.map(mapProject).filter((project) => project !== '_templates') || [];
   }
 
   public async initialize() {

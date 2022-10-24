@@ -44,7 +44,6 @@ export class CreateModuleCommand extends BaseCommand<CreateModuleCommandArgument
   };
 
   public handle(args: CommandArguments<CreateModuleCommandArguments>) {
-    console.log(args);
     const targetProject = Filesystem.getProjectByName(args.project);
     const argModules = args.generators.split(',');
 

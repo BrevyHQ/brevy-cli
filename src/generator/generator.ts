@@ -9,9 +9,10 @@ interface GeneratorData extends AnyObject {
 
 class CodeGenerator {
   public async run(cwd: string, data: GeneratorData) {
-    const { modules } = data;
-    const promises = modules.map((module) => CodeGenerator.executeRunner(cwd, module, data));
-    await Promise.all(promises);
+    for (const module of data.modules) {
+      // eslint-disable-next-line
+      await CodeGenerator.executeRunner(cwd, module, data);
+    }
   }
 
   private static executeRunner(cwd: string, module: string, data: AnyObject) {

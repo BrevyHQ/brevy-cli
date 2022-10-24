@@ -27,7 +27,7 @@
     "env-paths": "3.0.0",
     "figlet": "1.5.2",
     "hygen": "6.2.11",
-    "inquirer": "8.2.4",
+    "inquirer": "8.2.5",
     "reflect-metadata": "0.1.13",
     "tree-model": "1.0.7",
     "yargs": "17.6.0"

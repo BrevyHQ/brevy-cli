@@ -3,10 +3,9 @@ import { BaseCommand } from './command.js';
 import { Newable } from '../../utility/types.js';
 import { mustExist } from '../../utility/exists.js';
 
-import '../module/module.command.js';
+import '../create/create.command.js';
 import '../hello/hello.command.js';
 import '../help/help.command.js';
-
 
 class ApplicationCommandRegistry {
   private commands: Record<string, BaseCommand> = {};

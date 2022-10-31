@@ -1,6 +1,6 @@
 {
   "name": "@brevy/brevy-cli",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A Cli program with brevy project utilities for project scaffolding and more!",
   "repository": "https://github.com/BrevyHQ/brevy-cli",
   "author": "Brevy, Kamil Solecki",
@@ -10,7 +10,7 @@
   "main": "dist/main.js",
   "types": "dist/main.d.ts",
   "bin": {
-    "brevy": "./lib/main.js"
+    "brevy": "./dist/main.js"
   },
   "scripts": {
     "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node-esm' src/main.ts",
@@ -20,7 +20,7 @@
     "build": "tsc -p .",
     "local": "sudo npm i -g && brevy",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
-    "prepublish": "tsc",
+    "prepublish": "tsc .",
     "publish": "yarn run tsc && npm publish"
   },
   "dependencies": {

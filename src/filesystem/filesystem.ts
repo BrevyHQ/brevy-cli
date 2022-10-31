@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { rm } from 'fs/promises';
 import { CliConfigKey, Config } from './config.js';
 import { FilesystemEntry, getDirectoriesRecursively } from '../utility/paths.js';
 import { FilesystemConfig } from './filesystem.config.js';
@@ -25,11 +26,44 @@ class ApplicationFilesystem {
     return mustExist(this._filesystemRoot);
   }
 
+  private get resourcesRoot() {
+    return mustExist(this.filesystemRoot.first((node) => node.model.id.endsWith('resources')));
+  }
+
+  private get librariesRoot() {
+    return mustExist(this.filesystemRoot.first((node) => node.model.id.endsWith('libraries')));
+  }
+
+  public get filesystemRootDir() {
+    return mustExist(this.filesystemRoot.model.id);
+  }
+
+  public get apigenTemplatesDirectory() {
+    const templates = this.filesystemRoot.first((node) => node.model.id.endsWith('templates'));
+    return mustExist(templates).model.id;
+  }
+
+  public async initialize() {
+    await this.mapMonorepoDirectory();
+  }
+
   public getProjectNames(root: ProjectRoot) {
     const projectRoot = root === ProjectRoot.Server ? this.serverRoot : this.clientRoot;
     const projects = projectRoot?.children;
-    const mapProject = (project: TreeNode<FilesystemEntry>) => project.model.id.split('/').pop();
+    const mapProject = (project: TreeNode<FilesystemEntry>) =>
+      mustExist(project.model.id.split('/').pop());
     return projects?.map(mapProject).filter((project) => project !== '_templates') || [];
+  }
+
+  public getApigenSchemaFilepath(project: string) {
+    const schemas = this.resourcesRoot.first((node) => node.model.id.endsWith('schemas'));
+    const schemasDirectory = mustExist(schemas).model.id;
+    return join(schemasDirectory, `/${project}-api-schema.json`);
+  }
+
+  public getApigenOutputDirectory(project: string) {
+    const librariesDirectory = this.librariesRoot.model.id;
+    return join(librariesDirectory, `/${project}-api-client`);
   }
 
   public getTemplateNames(root: ProjectRoot) {
@@ -42,8 +76,12 @@ class ApplicationFilesystem {
     return templates?.map(mapProject).filter((project) => project !== '_templates') || [];
   }
 
-  public async initialize() {
-    await this.mapMonorepoDirectory();
+  public getProjectModulesByProjectName(name: string): Array<string> {
+    const project = this.getProjectByName(name);
+    const modules = mustExist(project.first((node) => node.model.id.endsWith('modules'))).children;
+    const mapModule = (module: TreeNode<FilesystemEntry>) =>
+      mustExist(module.model.id.split('/').pop());
+    return modules.map(mapModule);
   }
 
   public getProjectByName(name: string) {
@@ -75,6 +113,10 @@ class ApplicationFilesystem {
     }
 
     throw new Error('Project is not in a known category!');
+  }
+
+  public async removeDirectory(path: string) {
+    await rm(path, { recursive: true, force: true });
   }
 
   private async mapMonorepoDirectory() {

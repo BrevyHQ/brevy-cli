@@ -1,8 +1,8 @@
 import yargs from 'yargs';
-import { BaseCommand, CommandArguments } from '../base/command.js';
 import { Subcommand } from '../base/metadata.js';
+import { BaseCommand, CommandArguments } from '../base/command.js';
 import { Filesystem, ProjectRoot } from '../../filesystem/filesystem.js';
-import { Generator } from '../../generator/generator.js';
+import { CodeGenerator } from '../../generator/code.generator.js';
 
 interface CreateModuleCommandArguments {
   generators: string;
@@ -59,7 +59,7 @@ export class CreateModuleCommand extends BaseCommand<CreateModuleCommandArgument
       }
     }
 
-    return Generator.run(Filesystem.getProjectCategoryCwd(targetProject), {
+    return CodeGenerator.run(Filesystem.getProjectCategoryCwd(targetProject), {
       project: args.project,
       module: args.name,
       name: args.name,

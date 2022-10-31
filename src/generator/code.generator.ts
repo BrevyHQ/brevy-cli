@@ -1,5 +1,5 @@
 import { runner, Logger } from 'hygen';
-import execa from 'execa';
+import { execa } from 'execa';
 import enquirer from 'enquirer';
 import { AnyObject } from '../utility/types.js';
 
@@ -7,16 +7,16 @@ interface GeneratorData extends AnyObject {
   modules: Array<string>;
 }
 
-class CodeGenerator {
+class Generator {
   public async run(cwd: string, data: GeneratorData) {
     for (const module of data.modules) {
       // eslint-disable-next-line
-      await CodeGenerator.executeRunner(cwd, module, data);
+      await Generator.executeRunner(cwd, module, data);
     }
   }
 
   private static executeRunner(cwd: string, module: string, data: AnyObject) {
-    const runnerArgs = ['module', module, ...CodeGenerator.getGeneratorArguments(data)];
+    const runnerArgs = ['module', module, ...Generator.getGeneratorArguments(data)];
     return runner(runnerArgs, {
       cwd,
       templates: '',
@@ -25,7 +25,7 @@ class CodeGenerator {
       logger: new Logger(console.log.bind(console)),
       exec: (action, body) => {
         const options = body && body.length > 0 ? { input: body } : {};
-        return execa.command(action, { ...options, shell: true });
+        return execa(action, { ...options, shell: true });
       },
     });
   }
@@ -42,4 +42,4 @@ class CodeGenerator {
   }
 }
 
-export const Generator = new CodeGenerator();
+export const CodeGenerator = new Generator();

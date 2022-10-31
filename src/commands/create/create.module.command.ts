@@ -47,7 +47,7 @@ export class CreateModuleCommand extends BaseCommand<CreateModuleCommandArgument
     const targetProject = Filesystem.getProjectByName(args.project);
     const argModules = args.generators.split(',');
 
-    const modules = ['core'];
+    const modules = [];
     if (argModules.includes('all')) {
       modules.push(...Object.values(GeneratorModule));
     } else {
@@ -58,6 +58,8 @@ export class CreateModuleCommand extends BaseCommand<CreateModuleCommandArgument
         }
       }
     }
+
+    modules.push('core');
 
     return CodeGenerator.run(Filesystem.getProjectCategoryCwd(targetProject), {
       project: args.project,

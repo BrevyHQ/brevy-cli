@@ -1,13 +1,14 @@
 {
   "name": "@brevy/brevy-cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A Cli program with brevy project utilities for project scaffolding and more!",
   "repository": "https://github.com/BrevyHQ/brevy-cli",
   "author": "Brevy, Kamil Solecki",
   "license": "MIT",
   "type": "module",
   "private": false,
-  "main": "./lib/main.js",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "bin": {
     "brevy": "./lib/main.js"
   },
@@ -18,7 +19,8 @@
     "create": "npm run build && npm run test",
     "build": "tsc -p .",
     "local": "sudo npm i -g && brevy",
-    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
+    "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
+    "prepublish": "tsc"
   },
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.5.2",

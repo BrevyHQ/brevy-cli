@@ -6,14 +6,14 @@ Below, you will find a current list of commands, including their parameters and 
 
 ### Generate API Client code for a given server project
 ```bash
-brevy-cli apigen [project]
+brevy apigen [project]
 
     Accepted Options: 'all' + every server project's name.
 ```
 
 ### Create new module in a specific project, generating a skeleton
 ```bash
-brevy-cli create module [name] [generators] <--p, --project>
+brevy create module [name] [generators] <--p, --project>
 
   Positional arguments:
       [name]: The name of the module to create.
@@ -27,7 +27,7 @@ brevy-cli create module [name] [generators] <--p, --project>
 
 ### Create new entity in a specific project and module, generating a skeleton
 ```bash
-brevy-cli create entity [name] <--p, --project> <--m, --module>
+brevy create entity [name] <--p, --project> <--m, --module>
 
   Positional arguments:
       [name]: The name of the entity to create.

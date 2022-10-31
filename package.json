@@ -1,6 +1,6 @@
 {
   "name": "@brevy/brevy-cli",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A Cli program with brevy project utilities for project scaffolding and more!",
   "repository": "https://github.com/BrevyHQ/brevy-cli",
   "author": "Brevy, Kamil Solecki",
@@ -20,8 +20,6 @@
     "build": "tsc -p .",
     "local": "sudo npm i -g && brevy",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install",
-    "prepublish": "tsc .",
-    "publish": "yarn run tsc && npm publish"
   },
   "dependencies": {
     "@openapitools/openapi-generator-cli": "^2.5.2",

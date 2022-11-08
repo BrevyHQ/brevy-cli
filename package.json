@@ -1,6 +1,6 @@
 {
   "name": "@brevy/brevy-cli",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A Cli program with brevy project utilities for project scaffolding and more!",
   "repository": "https://github.com/BrevyHQ/brevy-cli",
   "author": "Brevy, Kamil Solecki",

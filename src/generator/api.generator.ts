@@ -12,26 +12,25 @@ class Generator {
   private static async prepareFiles(project: string) {
     await Generator.removeExistingContent(project);
     await Generator.spawnGenerator(project);
+    await Generator.runBuild(project);
   }
 
   private static async spawnGenerator(project: string) {
-    const command = 'generate';
     const npxArguments = [
       'openapi-generator-cli',
-      command,
+      'generate',
       ...Generator.getGeneratorArguments(project),
     ];
-    await execa('npx', npxArguments);
+    await execa('npx', npxArguments, {
+      cwd: Filesystem.filesystemRootDir,
+    });
 
-    Output.writeLine(`Generated API for project ${project}`);
+    Output.writeLine(`Successfully generated API for project ${project}`);
   }
 
   private static getGeneratorArguments(project: string) {
     const args: AnyObject = {
-      '-i': Filesystem.getApigenSchemaFilepath(project),
-      '-o': Filesystem.getApigenOutputDirectory(project),
-      '-t': Filesystem.apigenTemplatesDirectory,
-      '-g': 'typescript-fetch',
+      '--generator-key': project,
     };
 
     return Object.entries(args).flatMap((argument) => [argument[0], argument[1]]);
@@ -40,6 +39,14 @@ class Generator {
   private static async removeExistingContent(project: string) {
     const outputDirectory = Filesystem.getApigenOutputDirectory(project);
     await Filesystem.removeDirectory(outputDirectory);
+  }
+
+  private static async runBuild(project: string) {
+    await execa('yarn', ['run', 'build'], {
+      cwd: Filesystem.getApigenOutputDirectory(project),
+    });
+
+    Output.writeLine(`Successfully compiled API Client for ${project}`);
   }
 }
 

@@ -63,7 +63,12 @@ class ApplicationFilesystem {
 
   public getApigenOutputDirectory(project: string) {
     const librariesDirectory = this.librariesRoot.model.id;
-    return join(librariesDirectory, `/${project}-api-client`);
+    return join(librariesDirectory, `/client/${project}-api-client`);
+  }
+
+
+  public get apigenConfigFilepath() {
+    return join(this.filesystemRootDir, 'openapitools.json');
   }
 
   public getTemplateNames(root: ProjectRoot) {

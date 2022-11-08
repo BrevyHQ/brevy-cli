@@ -59,7 +59,7 @@ export class CreateModuleCommand extends BaseCommand<CreateModuleCommandArgument
       }
     }
 
-    modules.push('core');
+    modules.unshift('core');
 
     return CodeGenerator.run(Filesystem.getProjectCategoryCwd(targetProject), {
       project: args.project,

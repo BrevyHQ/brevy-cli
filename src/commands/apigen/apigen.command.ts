@@ -4,6 +4,8 @@ import { Command } from '../base/metadata.js';
 import { Filesystem, ProjectRoot } from '../../filesystem/filesystem.js';
 import { Output } from '../../output/output.js';
 import { ApiGenerator } from '../../generator/api.generator.js';
+import { exists } from '../../utility/exists.js';
+import * as process from "process";
 
 interface ApigenCommandArguments {
   projects: string;
@@ -22,6 +24,11 @@ export class ApigenCommand extends BaseCommand<ApigenCommandArguments> {
   };
 
   public async handle(args: CommandArguments<ApigenCommandArguments>) {
+    if (!exists(args.projects)) {
+      Output.writeLine('No projects specified. At least one is required!');
+      process.exit(0);
+    }
+
     const allServerProjects = Filesystem.getProjectNames(ProjectRoot.Server);
     const argProjects = Array.from(new Set(args.projects.split(',')));
 

@@ -22,6 +22,14 @@ class ApplicationFilesystem {
     this._filesystemRoot = root;
   }
 
+  private get filesystemSeparatorChar() {
+    if (process.platform === 'win32') {
+      return '\\';
+    }
+
+    return '/';
+  }
+
   private get filesystemRoot() {
     return mustExist(this._filesystemRoot);
   }
@@ -51,7 +59,7 @@ class ApplicationFilesystem {
     const projectRoot = root === ProjectRoot.Server ? this.serverRoot : this.clientRoot;
     const projects = projectRoot?.children;
     const mapProject = (project: TreeNode<FilesystemEntry>) =>
-      mustExist(project.model.id.split('/').pop());
+      mustExist(project.model.id.split(this.filesystemSeparatorChar).pop());
     return projects?.map(mapProject).filter((project) => project !== '_templates') || [];
   }
 
@@ -77,7 +85,7 @@ class ApplicationFilesystem {
       node.model.id.endsWith('_templates'),
     )?.children;
 
-    const mapProject = (project: TreeNode<FilesystemEntry>) => project.model.id.split('/').pop();
+    const mapProject = (project: TreeNode<FilesystemEntry>) => project.model.id.split(this.filesystemSeparatorChar).pop();
     return templates?.map(mapProject).filter((project) => project !== '_templates') || [];
   }
 
@@ -85,13 +93,13 @@ class ApplicationFilesystem {
     const project = this.getProjectByName(name);
     const modules = mustExist(project.first((node) => node.model.id.endsWith('modules'))).children;
     const mapModule = (module: TreeNode<FilesystemEntry>) =>
-      mustExist(module.model.id.split('/').pop());
+      mustExist(module.model.id.split(this.filesystemSeparatorChar).pop());
     return modules.map(mapModule);
   }
 
   public getProjectByName(name: string) {
     const matchProject = (node: TreeNode<FilesystemEntry>) =>
-      node.model.id.split('/').pop() === name;
+      node.model.id.split(this.filesystemSeparatorChar).pop() === name;
 
     const clientProject = this.clientRoot?.children.find(matchProject);
     if (exists(clientProject)) {

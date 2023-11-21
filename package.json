@@ -34,14 +34,14 @@
     "inquirer": "8.2.5",
     "reflect-metadata": "0.1.13",
     "tree-model": "1.0.7",
-    "yargs": "17.6.0"
+    "yargs": "17.7.2"
   },
   "devDependencies": {
     "@types/clear": "0.1.2",
     "@types/figlet": "1.5.5",
     "@types/inquirer": "9.0.2",
     "@types/node": "18.8.1",
-    "@types/yargs": "17.0.13",
+    "@types/yargs": "17.0.32",
     "@typescript-eslint/eslint-plugin": "5.40.1",
     "@typescript-eslint/parser": "5.40.1",
     "eslint": "8.22.0",
